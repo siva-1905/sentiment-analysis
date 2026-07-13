@@ -1,7 +1,8 @@
-from flask import Flask, app
+from flask import Flask
 
 from config import Config
 from extensions import db, login_manager
+
 
 def create_app():
 
@@ -18,11 +19,10 @@ def create_app():
 
     with app.app_context():
 
-    # Import models FIRST
         from database.models import (
-        User,
-        TextData,
-        SentimentResult
+            User,
+            TextData,
+            SentimentResult
         )
 
         db.create_all()
@@ -35,7 +35,6 @@ def create_app():
         from routes.profile import profile_bp
         from routes.notifications import notifications_bp
 
-
         app.register_blueprint(auth_bp)
         app.register_blueprint(dashboard_bp)
         app.register_blueprint(sentiment_bp)
@@ -43,6 +42,27 @@ def create_app():
         app.register_blueprint(reports_bp)
         app.register_blueprint(profile_bp)
         app.register_blueprint(notifications_bp)
+
+        from werkzeug.security import generate_password_hash
+
+        admin = User.query.filter_by(
+            email="admin@sentiment.com"
+        ).first()
+
+        if not admin:
+
+            admin = User(
+                name="Administrator",
+                email="admin@sentiment.com",
+                password=generate_password_hash("Admin@123"),
+                role="admin"
+            )
+
+            db.session.add(admin)
+            db.session.commit()
+
+            print("Default admin created")
+
     return app
 
 
