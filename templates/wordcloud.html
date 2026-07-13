@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Word Cloud</h2>
+
+<img
+    src="{{ url_for('static', filename='wordcloud.png') }}"
+    class="img-fluid">
+
+{% endblock %}

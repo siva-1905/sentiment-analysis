@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Sentiment Analysis</h2>
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <textarea
+            name="review"
+            rows="6"
+            class="form-control"
+            required>
+        </textarea>
+
+    </div>
+
+    <button class="btn btn-primary">
+
+        Analyze Sentiment
+
+    </button>
+
+</form>
+
+{% if sentiment %}
+
+<hr>
+
+<h4>Result</h4>
+
+<p>
+    <strong>Sentiment:</strong>
+    {{ sentiment }}
+</p>
+
+<p>
+    <strong>Confidence:</strong>
+    {{ confidence }}%
+</p>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Prediction History</h2>
+
+<form method="GET" class="row mb-4">
+
+    <div class="col-md-3">
+
+        <select name="sentiment" class="form-control">
+            <option value="">All Sentiments</option>
+            <option value="Positive">Positive</option>
+            <option value="Negative">Negative</option>
+            <option value="Neutral">Neutral</option>
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="Search Review Text"
+        >
+
+    </div>
+
+    <div class="col-md-2">
+
+        <input
+            type="date"
+            name="start_date"
+            class="form-control"
+        >
+
+    </div>
+
+    <div class="col-md-2">
+
+        <input
+            type="date"
+            name="end_date"
+            class="form-control"
+        >
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            Search
+        </button>
+
+    </div>
+
+</form>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Date</th>
+
+            <th>Sentiment</th>
+
+            <th>Confidence</th>
+
+            <th>Review</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for row in results %}
+
+        <tr>
+
+            <td>{{ row.prediction_date }}</td>
+
+            <td>{{ row.sentiment }}</td>
+
+            <td>{{ row.confidence_score }}%</td>
+
+            <td>{{ row.text[:100] }}...</td>
+
+            <td>
+
+                <a
+                    href="{{ url_for('sentiment.delete_result', id=row.id) }}"
+                    class="btn btn-danger btn-sm"
+                >
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Upload Reviews</h2>
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+    <input
+        type="file"
+        name="file"
+        class="form-control"
+        required
+    >
+
+    <br>
+
+    <button
+        class="btn btn-primary"
+        type="submit"
+    >
+        Upload & Analyze
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Recent Uploaded Results</h3>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Date</th>
+
+            <th>Sentiment</th>
+
+            <th>Confidence</th>
+
+            <th>Review</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for row in results %}
+
+        <tr>
+
+            <td>{{ row.prediction_date }}</td>
+
+            <td>{{ row.sentiment }}</td>
+
+            <td>{{ row.confidence_score }}%</td>
+
+            <td>{{ row.text[:100] }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

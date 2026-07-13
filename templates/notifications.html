@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    Notifications
+</h2>
+
+{% if notifications %}
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Title</th>
+
+            <th>Message</th>
+
+            <th>Status</th>
+
+            <th>Date</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for n in notifications %}
+
+        <tr>
+
+            <td>
+                {{ n.title }}
+            </td>
+
+            <td>
+                {{ n.message }}
+            </td>
+
+            <td>
+                {{ n.status }}
+            </td>
+
+            <td>
+                {{ n.created_at }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No notifications available.
+
+</div>
+
+{% endif %}
+
+{% endblock %}

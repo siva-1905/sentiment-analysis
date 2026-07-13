@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>User Management</h2>
+<a
+    href="{{ url_for('dashboard.add_user') }}"
+    class="btn btn-success mb-3"
+>
+    Add User
+</a>
+
+<a
+    href="{{ url_for('dashboard.export_users') }}"
+    class="btn btn-info mb-3"
+>
+    Export Users
+</a>
+
+<a
+    href="{{ url_for('dashboard.import_users') }}"
+    class="btn btn-secondary mb-3"
+>
+    Import Users
+</a>
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for user in users %}
+
+        <tr>
+
+            <td>{{ user.id }}</td>
+
+            <td>{{ user.name }}</td>
+
+            <td>{{ user.email }}</td>
+
+            <td>{{ user.role }}</td>
+
+            <td>
+                {% if user.status %}
+                    Active
+                {% else %}
+                    Disabled
+                {% endif %}
+            </td>
+
+            <td>
+                <a href="/admin/toggle-user/{{ user.id }}"
+                    class="btn btn-warning btn-sm">
+                    Toggle Status
+                </a>
+
+                <a href="/admin/delete-user/{{ user.id }}"
+                    class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+
+                <a href="{{ url_for('dashboard.edit_user', user_id=user.id) }}"
+                    class="btn btn-primary btn-sm">
+                    Edit
+                </a>
+            
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

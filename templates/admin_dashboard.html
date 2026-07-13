@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Admin Dashboard</h1>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Total Users</h4>
+            <h2>{{ total_users }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Total Reviews</h4>
+            <h2>{{ total_reviews }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<br>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Positive</h4>
+            <h2>{{ positive_reviews }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Negative</h4>
+            <h2>{{ negative_reviews }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Neutral</h4>
+            <h2>{{ neutral_reviews }}</h2>
+        </div>
+    </div>
+
+</div>
+<br>
+
+<a href="/admin/users"
+   class="btn btn-primary">
+
+   Manage Users
+
+</a>
+<br>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h3>Recent Uploads</h3>
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Category</th>
+
+                    <th>Source</th>
+
+                    <th>Upload Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in recent_uploads %}
+
+                <tr>
+
+                    <td>{{ item.id }}</td>
+
+                    <td>{{ item.sentiment }}</td>
+
+                    <td>{{ item.confidence_source }}</td>
+
+                    <td>{{ item.prediction_date }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+        <br>
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3>Analysis Trend</h3>
+
+                <canvas id="trendChart"></canvas>
+
+        </div>
+
+    </div>
+
+<script>
+
+const ctx =
+    document.getElementById(
+        "trendChart"
+    );
+
+new Chart(
+    ctx,
+    {
+        type: "line",
+
+        data: {
+
+            labels:
+                {{ dates|tojson }},
+
+            datasets: [{
+
+                label:
+                    "Analyses",
+
+                data:
+                    {{ counts|tojson }}
+
+            }]
+        }
+    }
+);
+
+</script>
+<br>
+
+<h3>Report Statistics</h3>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>PDF Reports</h5>
+            <h2>{{ pdf_reports }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>CSV Reports</h5>
+            <h2>{{ csv_reports }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Excel Reports</h5>
+            <h2>{{ excel_reports }}</h2>
+        </div>
+    </div>
+
+</div>
+    </div>
+
+</div>
+{% endblock %}

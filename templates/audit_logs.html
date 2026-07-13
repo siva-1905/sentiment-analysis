@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Audit Logs</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Activity</th>
+            <th>IP</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for log in logs %}
+
+        <tr>
+
+            <td>{{ log.user_id }}</td>
+
+            <td>{{ log.activity }}</td>
+
+            <td>{{ log.ip_address }}</td>
+
+            <td>{{ log.timestamp }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
