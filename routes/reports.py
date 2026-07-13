@@ -1,6 +1,7 @@
 from flask import (
     Blueprint,
-    send_file
+    send_file,
+    render_template
 )
 
 from flask_login import (
@@ -8,32 +9,35 @@ from flask_login import (
     current_user
 )
 
+from extensions import db
+
 from database.models import (
     SentimentResult,
     Report
 )
-from flask import render_template
+
+from utils.audit import create_log
+from utils.notification import create_notification
 
 import pandas as pd
 from io import BytesIO
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
-    Spacer,
-    PageBreak
+    Spacer
 )
 
 from reportlab.lib.styles import (
     getSampleStyleSheet
 )
 
-from reportlab.lib import colors
-
-from utils.audit import create_log
 reports_bp = Blueprint(
     "reports",
     __name__
 )
+
+
 @reports_bp.route("/export/csv")
 @login_required
 def export_csv():
@@ -63,29 +67,35 @@ def export_csv():
     )
 
     output.seek(0)
+
     create_log(
         current_user.id,
         "CSV Report Generated"
     )
-    from utils.notification import create_notification
+
     create_notification(
         current_user.id,
         "Report Generated",
         "Your CSV report is ready for download."
     )
+
     report = Report(
         report_name="Sentiment Report",
         report_type="CSV",
         generated_by=current_user.id
     )
+
     db.session.add(report)
     db.session.commit()
+
     return send_file(
         output,
         mimetype="text/csv",
         as_attachment=True,
         download_name="sentiment_report.csv"
     )
+
+
 @reports_bp.route("/export/excel")
 @login_required
 def export_excel():
@@ -120,30 +130,34 @@ def export_excel():
         )
 
     output.seek(0)
+
     create_log(
-            current_user.id,
-            "Excel Report Generated"
-        )
-    from utils.notification import create_notification
+        current_user.id,
+        "Excel Report Generated"
+    )
+
     create_notification(
         current_user.id,
         "Report Generated",
         "Your Excel report is ready for download."
     )
+
     report = Report(
         report_name="Sentiment Report",
         report_type="Excel",
         generated_by=current_user.id
     )
+
     db.session.add(report)
     db.session.commit()
+
     return send_file(
         output,
-        mimetype=
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         as_attachment=True,
         download_name="sentiment_report.xlsx"
     )
+
 
 @reports_bp.route("/export/pdf")
 @login_required
@@ -252,17 +266,22 @@ def export_pdf():
 
     for row in results[-20:]:
 
+        confidence = (
+            row.confidence_score
+            if row.confidence_score is not None
+            else 0
+        )
+
         elements.append(
             Paragraph(
-                f"<b>{row.sentiment}</b> "
-                f"({row.confidence_score:.2f}%)",
+                f"<b>{row.sentiment}</b> ({confidence:.2f}%)",
                 styles["Normal"]
             )
         )
 
         elements.append(
             Paragraph(
-                row.text[:250],
+                str(row.text)[:250],
                 styles["BodyText"]
             )
         )
@@ -274,16 +293,18 @@ def export_pdf():
     doc.build(elements)
 
     output.seek(0)
+
     create_log(
         current_user.id,
         "PDF Report Generated"
     )
-    from utils.notification import create_notification
+
     create_notification(
         current_user.id,
         "Report Generated",
         "Your PDF report is ready for download."
     )
+
     report = Report(
         report_name="Sentiment Report",
         report_type="PDF",
@@ -292,6 +313,7 @@ def export_pdf():
 
     db.session.add(report)
     db.session.commit()
+
     return send_file(
         output,
         mimetype="application/pdf",
@@ -304,6 +326,13 @@ def export_pdf():
 @login_required
 def reports():
 
+    all_reports = Report.query.filter_by(
+        generated_by=current_user.id
+    ).order_by(
+        Report.generated_date.desc()
+    ).all()
+
     return render_template(
-        "reports.html"
+        "reports.html",
+        reports=all_reports
     )

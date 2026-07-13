@@ -22,7 +22,10 @@ def create_app():
         from database.models import (
             User,
             TextData,
-            SentimentResult
+            SentimentResult,
+            AuditLog,
+            Notification,
+            Report
         )
 
         db.create_all()
