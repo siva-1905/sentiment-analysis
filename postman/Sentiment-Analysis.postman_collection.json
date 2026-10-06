@@ -1,0 +1,443 @@
+{
+  "info": {
+    "name": "Sentiment Analysis API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run requests in order. Postman keeps the session cookie automatically. Run 11 (Logout) then 12a to switch to admin."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Siva\",\n  \"email\": \"siva@example.com\",\n  \"password\": \"123456\"\n}"
+        }
+      }
+    },
+    {
+      "name": "2. Login (user)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"siva@example.com\",\n  \"password\": \"123456\"\n}"
+        }
+      }
+    },
+    {
+      "name": "3. Current User",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/auth/me",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Predict Sentiment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/sentiment/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sentiment",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"This movie was fantastic.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "5. History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sentiment/history",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sentiment",
+            "history"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5b. Delete History Item",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sentiment/history/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sentiment",
+            "history",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/dashboard",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "dashboard"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Upload CSV",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sentiment/upload",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sentiment",
+            "upload"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "sample_reviews.csv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. CSV Report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/reports/csv",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "csv"
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Excel Report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/reports/excel",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "excel"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. PDF Report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/reports/pdf",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "pdf"
+          ]
+        }
+      }
+    },
+    {
+      "name": "11. Logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/auth/logout",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        }
+      }
+    },
+    {
+      "name": "12a. Login (admin) - use ADMIN_EMAIL/ADMIN_PASSWORD from .env",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"change-this-password\"\n}"
+        }
+      }
+    },
+    {
+      "name": "12b. Admin - List Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/admin/users",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users"
+          ]
+        }
+      }
+    },
+    {
+      "name": "12c. Admin - Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/users",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"123456\",\n  \"role\": \"user\"\n}"
+        }
+      }
+    },
+    {
+      "name": "12d. Admin - Update User",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/users/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users",
+            "2"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Siva Kumar\",\n  \"email\": \"siva@example.com\"\n}"
+        }
+      }
+    },
+    {
+      "name": "13. Admin - Status Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/users/2/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users",
+            "2",
+            "status"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"disabled\"\n}"
+        }
+      }
+    },
+    {
+      "name": "14. Admin - Role Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/users/2/role",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users",
+            "2",
+            "role"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"role\": \"admin\"\n}"
+        }
+      }
+    },
+    {
+      "name": "15. Audit Logs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/admin/audit-logs?limit=100",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "audit-logs"
+          ]
+        }
+      }
+    },
+    {
+      "name": "16. Admin - Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/admin/users/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "users",
+            "3"
+          ]
+        }
+      }
+    }
+  ]
+}

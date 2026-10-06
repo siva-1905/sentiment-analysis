@@ -1,0 +1,13 @@
+.env
+venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+*.db
+instance/
+.DS_Store
+.pytest_cache/
+# large dataset (download it yourself)
+backend/ml/IMDB Dataset.csv
+# NOTE: backend/ml/models/*.pkl is intentionally NOT ignored so the trained model can be deployed
